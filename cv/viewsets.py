@@ -2,12 +2,11 @@
 from rest_framework import viewsets
 from .models import (
     TempIDModel, PersonalStatement, KeySkill, Education,
-    WorkExperience, WorkTask, Achievement, Interest
+    WorkExperience, Interest
 )
 from .serializers import (
     TempIDModelSerializer, PersonalStatementSerializer, KeySkillSerializer,
-    EducationSerializer, WorkExperienceSerializer, WorkTaskSerializer,
-    AchievementSerializer, InterestSerializer
+    EducationSerializer, WorkExperienceSerializer, InterestSerializer
 )
 
 
@@ -36,14 +35,14 @@ class WorkExperienceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkExperienceSerializer
 
 
-class WorkTaskViewSet(viewsets.ModelViewSet):
-    queryset = WorkTask.objects.all()
-    serializer_class = WorkTaskSerializer
+# class WorkTaskViewSet(viewsets.ModelViewSet):
+#     queryset = WorkTask.objects.all()
+#     serializer_class = WorkTaskSerializer
 
 
-class AchievementViewSet(viewsets.ModelViewSet):
-    queryset = Achievement.objects.all()
-    serializer_class = AchievementSerializer
+# class AchievementViewSet(viewsets.ModelViewSet):
+#     queryset = Achievement.objects.all()
+#     serializer_class = AchievementSerializer
 
 
 class InterestViewSet(viewsets.ModelViewSet):

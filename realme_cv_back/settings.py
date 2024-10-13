@@ -121,6 +121,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # 允许你的 React 应用的请求
+CORS_ALLOW_ALL_ORIGINS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',  # React 前端的地址
 ]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',  # 允许你的 React 前端进行跨域请求
+]
+

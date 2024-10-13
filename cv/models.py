@@ -17,6 +17,15 @@ class TempIDModel(BaseModel):
     def __str__(self):
         return str(self.temp_id)
 
+# class PersonalInfo(BaseModel):
+#     temp_id = models.OneToOneField(TempIDModel, on_delete=models.CASCADE)
+#     name = models.TextField()
+#     phone = models.TextField()
+#     email = models.TextField()
+#     linkedin = models.TextField()
+
+#     def __str__(self):
+#         return str(self.temp_id)
 
 class PersonalStatement(BaseModel):
     temp_id = models.OneToOneField(TempIDModel, on_delete=models.CASCADE)

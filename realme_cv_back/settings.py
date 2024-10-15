@@ -24,6 +24,7 @@ SECRET_KEY = 'django-insecure-krxckvvgsy!ya(9ox__p)ao78z#g_-$%!0m70_vdkro$fm9^a*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -121,13 +122,14 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOW_ALL_ORIGINS = True
+
+# CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*']
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',  # React 前端的地址
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',  # 允许你的 React 前端进行跨域请求
+    'http://localhost:3000', 
 ]
-

@@ -410,11 +410,11 @@ def generate_word(request):
         personalinfo_raw = data["PersonalInfo"]
         personalinfo = json.loads(personalinfo_raw)
         # document.add_heading('Personal Information', level=1)
-        document.add_heading('Name  ' + personalinfo["name"], level=1) 
+        document.add_heading(personalinfo["name"], level=1) 
         add_horizontal_line(document.add_paragraph()) #horizontal_line
-        document.add_paragraph('Mobile:   ' + personalinfo["phone"])  
-        document.add_paragraph('Email:    ' + personalinfo["email"]) 
-        document.add_paragraph('LinkedIn URL:   ' + personalinfo["linkedin"]) 
+        document.add_paragraph(personalinfo["phone"])  
+        document.add_paragraph(personalinfo["email"]) 
+        document.add_paragraph(personalinfo["linkedin"]) 
                 
         # # PersonalStatement
         personalstatement_raw = data["PersonalStatement"]
@@ -422,21 +422,23 @@ def generate_word(request):
         document.add_heading('Personal Statement OR Career Objective', level=1)        
         add_horizontal_line(document.add_paragraph()) #horizontal_line
         document.add_paragraph(personalstatement["Q1"])
-        document.add_paragraph(personalstatement["Q2"])
+        # document.add_paragraph(personalstatement["Q2"])
         
         # Key Skills
         skills_raw = data["Skills"]
         skills = json.loads(skills_raw)
-        document.add_heading('Skills', level=1)        
+        document.add_heading('Key Skills', level=1)        
         add_horizontal_line(document.add_paragraph()) #horizontal_line
         document.add_paragraph(skills["Q1"])
-        document.add_paragraph(skills["Q2"])
+        # document.add_paragraph(skills["Q2"])
         
         # Education
         education_raw = data["Education"]
         education_data = json.loads(education_raw)
-        document.add_heading('Education', level=1)      
-        for education in education_data.values():
+        # data = education_data.educations[0]
+        document.add_heading('Education', level=1)    
+        print(education_data['educations'])  
+        for education in education_data['educations']:
             add_horizontal_line(document.add_paragraph()) #horizontal_line
             table = document.add_table(rows=1, cols=2)
             table.columns[0].width = Pt(400)
@@ -445,17 +447,19 @@ def generate_word(request):
             cell_left.text = education.get('major','N/A')
             cell_right = table.cell(0, 1)
             paragraph = cell_right.paragraphs[0]
-            run = paragraph.add_run(f"dates({education.get('start','N/A')}-{education.get('end','N/A')})")
+            run = paragraph.add_run(f"dates({education.get('startTime','N/A')}-{education.get('endTime','N/A')})")
             paragraph.alignment = 2  # 2 表示右对齐
             document.add_paragraph(education["school"])            
             document.add_paragraph(education["achievements"])
+            # print(education["achievements"])
             
             
         # Work Experience
         work_raw = data["Work"]
         work_data = json.loads(work_raw)
-        document.add_heading('Work', level=1)      
-        for work in work_data.values():
+        document.add_heading('Work Experience', level=1)      
+        # for work in work_data.values():  
+        for work in work_data['work']:
             add_horizontal_line(document.add_paragraph()) #horizontal_line
             table = document.add_table(rows=1, cols=2)
             table.columns[0].width = Pt(400)
@@ -476,7 +480,12 @@ def generate_word(request):
         document.add_heading('Interests', level=1)        
         add_horizontal_line(document.add_paragraph()) #horizontal_line
         document.add_paragraph(interests["Q1"])
-        document.add_paragraph(interests["Q2"])
+        # document.add_paragraph(interests["Q2"])
+        
+        
+        document.add_heading('Referees (Optional)', level=1)        
+        add_horizontal_line(document.add_paragraph()) #horizontal_line
+        document.add_paragraph("Provide details of 2 people who will speak positively about you and confirm your relevant skills and personal attributes. Remember to ask first. If you write ‘Available on request’, you do not need to put the details on your CV.")
         
         
         

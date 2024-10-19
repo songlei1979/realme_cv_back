@@ -376,6 +376,7 @@ from docx import Document
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 def add_horizontal_line(paragraph):
     """在段落中添加一条横线"""
@@ -410,8 +411,17 @@ def generate_word(request):
         personalinfo_raw = data["PersonalInfo"]
         personalinfo = json.loads(personalinfo_raw)
         # document.add_heading('Personal Information', level=1)
-        document.add_heading(personalinfo["name"], level=1) 
-        add_horizontal_line(document.add_paragraph()) #horizontal_line
+        # 添加一段而不是使用 add_heading
+        # paragraph = document.add_paragraph()
+
+        # # 添加文本并设置字体大小为 18
+        # run = paragraph.add_run(personalinfo["name"])
+        # run.font.size = Pt(18)
+
+        heading = document.add_heading(personalinfo["name"], level=1) 
+        run = heading.runs[0]
+        run.font.size = Pt(18)
+
         document.add_paragraph(personalinfo["phone"])  
         document.add_paragraph(personalinfo["email"]) 
         document.add_paragraph(personalinfo["linkedin"]) 
@@ -438,8 +448,8 @@ def generate_word(request):
         # data = education_data.educations[0]
         document.add_heading('Education', level=1)    
         print(education_data['educations'])  
+        add_horizontal_line(document.add_paragraph()) #horizontal_line
         for education in education_data['educations']:
-            add_horizontal_line(document.add_paragraph()) #horizontal_line
             table = document.add_table(rows=1, cols=2)
             table.columns[0].width = Pt(400)
             table.columns[1].width = Pt(400)
@@ -447,20 +457,37 @@ def generate_word(request):
             cell_left.text = education.get('major','N/A')
             cell_right = table.cell(0, 1)
             paragraph = cell_right.paragraphs[0]
-            run = paragraph.add_run(f"dates({education.get('startTime','N/A')}-{education.get('endTime','N/A')})")
+            run = paragraph.add_run(f"{education.get('startTime','N/A')}-{education.get('endTime','N/A')}")
             paragraph.alignment = 2  # 2 表示右对齐
             document.add_paragraph(education["school"])            
             document.add_paragraph(education["achievements"])
-            # print(education["achievements"])
             
             
         # Work Experience
         work_raw = data["Work"]
         work_data = json.loads(work_raw)
         document.add_heading('Work Experience', level=1)      
+        add_horizontal_line(document.add_paragraph()) #horizontal_line
         # for work in work_data.values():  
         for work in work_data['work']:
-            add_horizontal_line(document.add_paragraph()) #horizontal_line
+            # paragraph = document.add_paragraph()
+
+            # # 插入左边的文本（job_title）
+            # run_left = paragraph.add_run(work.get('job_title', 'N/A'))
+            
+            # # 插入右边的文本（startTime - endTime），并设置右对齐
+            # run_right = paragraph.add_run(f"{work.get('startTime', 'N/A')} - {work.get('endTime', 'N/A')}")
+            # run_right.add_tab()  # 插入制表符
+            # run_right.add_tab()  # 插入制表符
+            # run_right.add_tab()  # 插入制表符
+            # run_right.add_tab()  # 插入制表符
+            # run_right.add_tab()  # 插入制表符
+            # paragraph.alignment = WD_ALIGN_PARAGRAPH.RIGHT  # 设置段落右对齐
+
+            # # 调整段落格式，确保左边内容保持左对齐，右边内容靠右
+            # paragraph.paragraph_format.tab_stops.add_tab_stop(Pt(500))
+            
+            
             table = document.add_table(rows=1, cols=2)
             table.columns[0].width = Pt(400)
             table.columns[1].width = Pt(400)
@@ -468,7 +495,7 @@ def generate_word(request):
             cell_left.text = work.get('job_title','N/A')
             cell_right = table.cell(0, 1)
             paragraph = cell_right.paragraphs[0]
-            run = paragraph.add_run(f"dates({work.get('startTime','N/A')}-{work.get('endTime','N/A')})")
+            run = paragraph.add_run(f"{work.get('startTime','N/A')}-{work.get('endTime','N/A')}")
             paragraph.alignment = 2  # 2 表示右对齐
             document.add_paragraph(work["organisation"])            
             document.add_paragraph(work["tasks"])      
@@ -481,13 +508,8 @@ def generate_word(request):
         add_horizontal_line(document.add_paragraph()) #horizontal_line
         document.add_paragraph(interests["Q1"])
         # document.add_paragraph(interests["Q2"])
-        
-        
-        document.add_heading('Referees (Optional)', level=1)        
+         
         add_horizontal_line(document.add_paragraph()) #horizontal_line
-        document.add_paragraph("Provide details of 2 people who will speak positively about you and confirm your relevant skills and personal attributes. Remember to ask first. If you write ‘Available on request’, you do not need to put the details on your CV.")
-        
-        
         
         
         
